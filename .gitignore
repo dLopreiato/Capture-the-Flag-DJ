@@ -14,6 +14,7 @@ SFML/
 
 # Media
 *.mp3
+*.wav
 
 # Build results
 [Dd]ebug/

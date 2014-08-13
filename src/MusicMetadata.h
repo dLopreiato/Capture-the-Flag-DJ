@@ -9,7 +9,7 @@ struct MusicMetadata {
         music = musicP;
         wasStarted = false;
         fadeInOffset = sf::microseconds(0);
-        fadeOutOffset = sf::microseconds(0);
+        fadeOutOffset = musicP->getDuration();
         pauseMarker = sf::microseconds(0);
     }
 
@@ -27,14 +27,24 @@ struct MusicMetadata {
     /* True if the Music has been started at some point. */
     bool wasStarted;
     
-    /* The time the song should be at full fade by. */
+    /* The time the song should start fading in at. */
     sf::Time fadeInOffset;
 
-    /* The time the song should begin to fade out. */
+    /* The time the song should be finished fading out by. */
     sf::Time fadeOutOffset;
 
     /* The time the song was paused, and should be reset to before it's unpaused. */
     sf::Time pauseMarker; // This field allows for fading in and out of pauses.
+
+    /* Updates the pauseMarker to the current time marker. */
+    void UpdatePauseMarker() {
+        pauseMarker = music->getPlayingOffset();
+    }
+
+    /* Sets the Music position offset to the value of the pause marker. */
+    void SetToPauseMarker() {
+        music->setPlayingOffset(pauseMarker);
+    }
 };
 
 #endif

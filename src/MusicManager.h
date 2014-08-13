@@ -41,13 +41,14 @@ public:
 private:
     
     MusicMetadata* currentMusic_;
+    float currentPauseFader_;
+    float currentTalkFader_;
     sf::Time defaultFadeDuration_;
-    float goalVolumeMultiplier_;
-    float globalVolumeMultiplier_;
+    float goalPauseFader_;
+    float goalTalkFader_;
     MusicContext musicContext_;
     PlaylistID nextPlaylist_;
     bool paused_;
-    bool pauseStateChangeReady_;
     std::vector<IPlaylist*> playlists_;
     MusicMetadata* previousMusic_;
     

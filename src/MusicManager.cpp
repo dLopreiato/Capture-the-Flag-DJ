@@ -1,11 +1,13 @@
 #include "MusicManager.h"
+#include <assert.h>
 #define FULL_VOLUME 1.0f
-#define LOW_VOLUME .3f
+#define LOW_VOLUME 0.3f
+#define MUTE_VOLUME 0.0f
 
-MusicManager::MusicManager() : currentMusic_(nullptr), defaultFadeDuration_(sf::milliseconds(1300)),
-    goalVolumeMultiplier_(FULL_VOLUME), globalVolumeMultiplier_(FULL_VOLUME), musicContext_(),
-    nextPlaylist_(0), paused_(true), pauseStateChangeReady_(true), playlists_(),
-    previousMusic_(nullptr) {
+MusicManager::MusicManager() : currentMusic_(nullptr), currentPauseFader_(MUTE_VOLUME),
+    currentTalkFader_(FULL_VOLUME), defaultFadeDuration_(sf::milliseconds(1300)),
+    goalPauseFader_(MUTE_VOLUME), goalTalkFader_(FULL_VOLUME), musicContext_(), nextPlaylist_(0),
+    paused_(true), playlists_(), previousMusic_(nullptr) {
 
 }
 
@@ -14,6 +16,21 @@ MusicManager::~MusicManager() {
 }
 
 void MusicManager::Update() {
+    assert(nextPlaylist_ != 0);
+    // check if the current song has ended
+        // move current to previous
+        // get new current
+
+    // check if previous song has ended
+        // delete it
+
+    // adjust pause fade
+
+    // pause the song if it has faded completely down
+
+    // adjust talk fade
+
+    // adjust the final fades of the songs
 
 }
 
@@ -22,18 +39,23 @@ const MusicContext* MusicManager::GetContext() {
 }
 
 void MusicManager::SetPause(bool paused) {
-    if (!paused)
-        currentMusic_->music->play();
-
-    /*if (pauseStateChangeReady_) {
-        paused_ = paused;
-        pauseStateChangeReady_ = false;
-    }*/
-    // if it can't change state, we'll silently fail
+    paused_ = paused;
+    goalPauseFader_ = (paused) ? (MUTE_VOLUME) : (FULL_VOLUME);
+    if (paused) {
+        // update the pause marker
+        currentMusic_->UpdatePauseMarker();
+    }
+    else {
+        // set the song back to where we started pausing ONLY IF THE SONG HAS BEEN 100% FADED
+        if (currentPauseFader_ <= MUTE_VOLUME) {
+            currentMusic_->SetToPauseMarker();
+            currentMusic_->music->play();
+        }
+    }
 }
 
 void MusicManager::SetLowVolume(bool lowVolume) {
-    goalVolumeMultiplier_ = (lowVolume) ? (LOW_VOLUME) : (FULL_VOLUME);
+    goalTalkFader_ = (lowVolume) ? (LOW_VOLUME) : (FULL_VOLUME);
 }
 
 void MusicManager::NextSong() {
@@ -49,10 +71,8 @@ void MusicManager::NextSong() {
     previousMusic_ = currentMusic_;
     // make currentSong whatever comes next from the next playlist, and start it
     currentMusic_ = playlists_[nextPlaylist_]->GetNextMusic();
-    //currentMusic_->music->setVolume(0.0f);
-    sf::Time offset = (currentMusic_->fadeInOffset >= defaultFadeDuration_) ?
-        (currentMusic_->fadeInOffset - defaultFadeDuration_) : (sf::microseconds(0));
-    currentMusic_->music->setPlayingOffset(offset);
+    currentMusic_->music->setVolume(MUTE_VOLUME);
+    currentMusic_->music->setPlayingOffset(currentMusic_->fadeInOffset);
     currentMusic_->music->play();
     currentMusic_->wasStarted = true;
 }
@@ -62,11 +82,15 @@ void MusicManager::SetNextPlaylist(PlaylistID playlistId) {
 }
 
 PlaylistID MusicManager::AddPlaylist(IPlaylist* playlist) {
-    int thisIndex = playlists_.size();
     playlists_.push_back(playlist);
 
-    if (thisIndex == 0)
+    // note that this makes every id to be 1 more than its index
+    int thisIndex = playlists_.size();
+
+    if (thisIndex == 0) {
         nextPlaylist_ = thisIndex;
+        NextSong();
+    }
 
     return thisIndex;
 }

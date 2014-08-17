@@ -10,7 +10,6 @@ public:
     MusicMetadata* GetNextMusic();
 private:
     std::string filename_;
-    MusicMetadata* nextMusic_;
 };
 
 #endif

@@ -17,7 +17,7 @@ public:
 	~MusicManager();
 
 	/* Must be called regularly in order to do proper functionality. */
-	void Update();
+	void Update(sf::Time elapsedTime);
 	
     /* Returns the current context */
     const MusicContext* GetContext();
@@ -39,10 +39,16 @@ public:
     PlaylistID AddPlaylist(IPlaylist* playlist);
 
 private:
+
+    void ClearPrevious();
+    void StartCurrent();
+    float AdjustFader(float currentVolume, float goalVolume, sf::Time elapsedTime,
+        float lowestVolume, float highestVolume);
     
     MusicMetadata* currentMusic_;
     float currentPauseFader_;
     float currentTalkFader_;
+    float currentTimeFader_;
     sf::Time defaultFadeDuration_;
     float goalPauseFader_;
     float goalTalkFader_;
@@ -51,6 +57,7 @@ private:
     bool paused_;
     std::vector<IPlaylist*> playlists_;
     MusicMetadata* previousMusic_;
+    float previousTimeFader_;
     
 };
 

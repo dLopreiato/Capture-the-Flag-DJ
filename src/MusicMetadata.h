@@ -45,6 +45,17 @@ struct MusicMetadata {
     void SetToPauseMarker() {
         music->setPlayingOffset(pauseMarker);
     }
+
+    /* Gets the amount of time that remains before the song should be completely stopped. */
+    sf::Time GetTimeToEnd() {
+        return fadeOutOffset - music->getPlayingOffset();
+    }
+
+    /* True if the song is in a state where it should be disposed. */
+    bool IsFinished() {
+        return (music->getStatus() == sf::Music::Stopped) ||
+            (music->getPlayingOffset() >= fadeOutOffset);
+    }
 };
 
 #endif

@@ -9,4 +9,5 @@ This is still in progress, and is not quite acccept pull requests.
 
 Build
 -----
-Uses SFML library.
+Uses SFML, and irrKlang libraries.
+THE CURRENT VERSION CRASHES WHEN A SONG STOPS.

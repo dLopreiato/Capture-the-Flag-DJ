@@ -2,14 +2,16 @@
 #define INCLUDED_SINGLE_FILE_PLAYLIST
 #include "IPlaylist.h"
 #include <string>
+#include <irrKlang.h>
 
 class SingleFilePlaylist : public IPlaylist {
 public:
-    SingleFilePlaylist(const std::string& filename);
+    SingleFilePlaylist(irrklang::ISoundEngine* engine, char* filename);
     ~SingleFilePlaylist();
-    MusicMetadata* GetNextMusic();
+    Music* GetNextMusic();
 private:
-    std::string filename_;
+    char* filename_;
+    irrklang::ISoundEngine* engine_;
 };
 
 #endif

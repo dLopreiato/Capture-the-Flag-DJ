@@ -38,7 +38,7 @@ void MusicManager::Update(sf::Time elapsedTime) {
 
     // pause the song if it has faded completely down
     if (currentPauseFader_ <= MUTE_VOLUME) {
-        currentMusic_->music->pause();
+        currentMusic_->Pause();
         currentMusic_->SetToPauseMarker();
     }
 
@@ -55,10 +55,9 @@ void MusicManager::Update(sf::Time elapsedTime) {
     }
     
     // set the final fades of the songs
-    currentMusic_->music->setVolume(100.0f * currentPauseFader_ * currentTalkFader_ * currentTimeFader_);
+    currentMusic_->SetVolume(currentPauseFader_ * currentTalkFader_ * currentTimeFader_);
     if (previousMusic_ != nullptr) {
-        previousMusic_->music->setVolume(100.0f * currentPauseFader_ *
-            currentTalkFader_ * previousTimeFader_);
+        previousMusic_->SetVolume(currentPauseFader_ * currentTalkFader_ * previousTimeFader_);
     }
 }
 
@@ -77,7 +76,7 @@ void MusicManager::SetPause(bool paused) {
         // set the song back to where we started pausing ONLY IF THE SONG HAS BEEN 100% FADED
         if (currentPauseFader_ <= MUTE_VOLUME) {
             currentMusic_->SetToPauseMarker();
-            currentMusic_->music->play();
+            currentMusic_->Play();
         }
     }
 }
@@ -117,8 +116,6 @@ PlaylistID MusicManager::AddPlaylist(IPlaylist* playlist) {
 
 void MusicManager::ClearPrevious() {
     if (previousMusic_ != nullptr) {
-        previousMusic_->music->stop();
-        delete previousMusic_->music;
         delete previousMusic_;
         previousMusic_ = nullptr;
     }
@@ -126,10 +123,8 @@ void MusicManager::ClearPrevious() {
 
 void MusicManager::StartCurrent() {
     assert(currentMusic_ != nullptr);
-    currentMusic_->music->setVolume(MUTE_VOLUME);
-    currentMusic_->music->setPlayingOffset(currentMusic_->fadeInOffset);
-    currentMusic_->music->play();
-    currentMusic_->wasStarted = true;
+    currentMusic_->SetVolume(MUTE_VOLUME);
+    currentMusic_->Play();
 }
 
 float MusicManager::AdjustFader(float currentVolume, float goalVolume, sf::Time elapsedTime,

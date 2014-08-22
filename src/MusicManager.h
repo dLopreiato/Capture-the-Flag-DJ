@@ -45,7 +45,7 @@ private:
     float AdjustFader(float currentVolume, float goalVolume, sf::Time elapsedTime,
         float lowestVolume, float highestVolume);
     
-    MusicMetadata* currentMusic_;
+    Music* currentMusic_;
     float currentPauseFader_;
     float currentTalkFader_;
     float currentTimeFader_;
@@ -56,7 +56,7 @@ private:
     PlaylistID nextPlaylist_;
     bool paused_;
     std::vector<IPlaylist*> playlists_;
-    MusicMetadata* previousMusic_;
+    Music* previousMusic_;
     float previousTimeFader_;
     
 };

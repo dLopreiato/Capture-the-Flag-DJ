@@ -10,7 +10,6 @@ Music::Music(irrklang::ISound* sound, sf::Time startOffset, sf::Time finishOffse
 Music::~Music() {
     sound_->stop();
 	sound_->drop();
-	delete sound_;
 }
 
 void Music::SetVolume(float volume) {

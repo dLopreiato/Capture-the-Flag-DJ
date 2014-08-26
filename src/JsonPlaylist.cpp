@@ -8,7 +8,7 @@ JsonPlaylist::JsonPlaylist(irrklang::ISoundEngine* engine, char* jsonFile) : eng
     std::ifstream fStream;
     fStream.open(jsonFile_, std::fstream::in | std::fstream::binary);
     if (fStream.fail()) {
-        throw "Oh Fuck.";
+        throw "This has broken.";
     }
     fStream.seekg(0, std::ios::end);
     int length = (int)(fStream.tellg());
@@ -23,7 +23,7 @@ JsonPlaylist::JsonPlaylist(irrklang::ISoundEngine* engine, char* jsonFile) : eng
 }
 
 JsonPlaylist::~JsonPlaylist() {
-    delete jsonContents_;
+    //delete jsonContents_;
 }
 
 Music* JsonPlaylist::GetNextMusic() {

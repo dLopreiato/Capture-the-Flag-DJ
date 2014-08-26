@@ -1,7 +1,6 @@
 #ifndef INCLUDED_SINGLE_FILE_PLAYLIST
 #define INCLUDED_SINGLE_FILE_PLAYLIST
 #include "IPlaylist.h"
-#include <string>
 #include <irrKlang.h>
 
 class SingleFilePlaylist : public IPlaylist {

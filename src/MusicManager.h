@@ -11,7 +11,7 @@ typedef unsigned int PlaylistID;
 class MusicManager {
 public: 
 	/* Constructs a MusicManager. MusicManger starts paused. */
-	MusicManager();
+	MusicManager(sf::Time fadeDuration = sf::milliseconds(1300));
 
 	/* Destructs the MusicManager. */
 	~MusicManager();

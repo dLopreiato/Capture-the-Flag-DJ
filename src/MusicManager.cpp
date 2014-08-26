@@ -4,11 +4,11 @@
 #define LOW_VOLUME 0.3f
 #define MUTE_VOLUME 0.0f
 
-MusicManager::MusicManager() : currentMusic_(nullptr), currentPauseFader_(MUTE_VOLUME),
-    currentTalkFader_(FULL_VOLUME), currentTimeFader_(FULL_VOLUME),
-    defaultFadeDuration_(sf::milliseconds(1300)), goalPauseFader_(MUTE_VOLUME),
-    goalTalkFader_(FULL_VOLUME), musicContext_(), nextPlaylist_(0), paused_(true), playlists_(),
-    previousMusic_(nullptr), previousTimeFader_(FULL_VOLUME) {
+MusicManager::MusicManager(sf::Time fadeDuration) : currentMusic_(nullptr),
+    currentPauseFader_(MUTE_VOLUME), currentTalkFader_(FULL_VOLUME),
+    currentTimeFader_(FULL_VOLUME), defaultFadeDuration_(fadeDuration),
+    goalPauseFader_(MUTE_VOLUME), goalTalkFader_(FULL_VOLUME), musicContext_(), nextPlaylist_(0),
+    paused_(true), playlists_(), previousMusic_(nullptr), previousTimeFader_(FULL_VOLUME) {
 
 }
 

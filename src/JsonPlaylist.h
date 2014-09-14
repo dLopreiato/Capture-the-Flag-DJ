@@ -6,8 +6,9 @@
 
 class JsonPlaylist : public IPlaylist {
 public:
+    /* Creates a JsonPlaylist from a Json file at a specified location. */
     JsonPlaylist(irrklang::ISoundEngine* engine, char* jsonFile);
-    ~JsonPlaylist();
+    /* Returns the next Music to be played. */
     Music* GetNextMusic();
 private:
     unsigned int nextSong_;
